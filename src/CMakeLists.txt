@@ -6,9 +6,12 @@ include_directories(
   ${redlandpp_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   "/usr/include/rasqal"
+  "/usr/lib"
 )
 
 set( REDLANDPP_CORE_SRCS
+  CLuceneStorage.cpp
+  rdf_storage_clucene.cpp
   Exception.cpp
   Log.cpp
   Model.cpp
@@ -22,8 +25,7 @@ set( REDLANDPP_CORE_SRCS
   World.cpp
 )
 #find our headers
-file(GLOB_RECURSE REDLANDPP_CORE_HEADERS ${redlandpp-SOURCE_DIR}/redlandpp/*.h)
-
+file(GLOB_RECURSE REDLANDPP_CORE_HEADERS ${redlandpp_SOURCE_DIR}/redlandpp/*.hpp)
 
 CHECK_INCLUDE_FILE_CXX ( dlfcn.h HAVE_DLFCN_H )
 CHECK_INCLUDE_FILE_CXX ( inttypes.h HAVE_INTTYPES_H )
@@ -40,12 +42,7 @@ CHECK_INCLUDE_FILE_CXX ( unistd.h HAVE_UNISTD_H )
 
 configure_file(${redlandpp-core_SOURCE_DIR}/redlandpp_config.h.cmake ${redlandpp-core_BINARY_DIR}/redlandpp_config.h)
 
-add_library(redlandpp SHARED ${REDLANDPP_CORE_SRCS})
-
-#target_link_libraries(
-  #redlandpp
-  #redland
-#)
+add_library(redlandpp SHARED ${REDLANDPP_CORE_SRCS} ${REDLANDPP_CORE_HEADERS})
 
 set_target_properties(
   redlandpp

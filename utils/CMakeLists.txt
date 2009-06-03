@@ -7,4 +7,4 @@ include_directories(
 )
 
 add_executable(rdfprocpp rdfprocpp.cpp)
-target_link_libraries(rdfprocpp redlandpp rdf )
+target_link_libraries(rdfprocpp redlandpp clucene /home/ben/dev/clucene-rdf/redland-1.0.9/gcc/install/lib/librdf.so )
