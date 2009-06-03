@@ -46,14 +46,14 @@ int main(int argc, char * argv[])
 
   cout << "Initialised " << world << endl;
 
-  CLuceneStorage storage(world, "", "dir='/home/ben/dev/svn_strigi/testindex'");
-  //MemoryStorage storage(world);
+  //CLuceneStorage storage(world, "", "dir='/home/ben/dev/svn_strigi/testindex'");
+  MemoryStorage storage(world);
 
   Model model(world, storage);
 
   cout << "Redland is " + world.shortCopyrightString() << endl;
 
-/*
+
   Uri uri(&world, "file:///home/ben/dev/clucene-rdf/foaf.rdf");
 
   cout << "URI is " << uri << endl;
@@ -77,7 +77,7 @@ int main(int argc, char * argv[])
 
   cout << "Parser is " << parser << endl;
 
-#if 1
+#if 0
   try {
     Stream* s = parser.parseUri(&uri, NULL);
     while(true) {
@@ -105,23 +105,22 @@ int main(int argc, char * argv[])
   }
 
   cout << "Model has " << model.size() << " triples" << endl;
-*/
 
-  /*const unsigned char* query_string = (const unsigned char*) "select ?nick, ?name where "
+  const unsigned char* query_string = (const unsigned char*) "select ?nick, ?name where "
       "(?x rdf:type foaf:Person) (?x foaf:nick ?nick) (?x foaf:name ?name)"
-      "using foaf for <http://xmlns.com/foaf/0.1/>";*/
+      "using foaf for <http://xmlns.com/foaf/0.1/>";
   //const unsigned char* query_string = (const unsigned char*)argv[1];
   //const unsigned char* query_string = (const unsigned char*)"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX iemsr: <http://www.ukoln.ac.uk/projects/iemsr/terms/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT $number $name $description WHERE {   $r rdf:type iemsr:RootDataElement .   $n iemsr:isChildOf $r .   $n iemsr:refNumber $number .   $n rdfs:label $name .   $n rdfs:comment $description }";
   //const unsigned char* query_string = (const unsigned char*)"PREFIX : <http://www.commonobjects.example.org/gmlrss> PREFIX bio: <http://purl.org/vocab/bio/0.1/> PREFIX foaf: <http://xmlns.com/foaf/0.1/>  SELECT ?name ?birthDate ?deathDate WHERE { ?bridge a :Bridge; foaf:maker ?person [ foaf:name ?name; bio:event [ a bio:Birth; bio:date ?birthDate ]; bio:event [ a bio:Death; bio:date ?deathDate ] ] }";
-  const unsigned char* query_string = (const unsigned char*)"PREFIX fd: <http://freedesktop.org/standards/xesam/1.0/core#> SELECT ?url WHERE { ?x fd:fileExtension \"cpp\" . ?x fd:url ?url }";
-  librdf_query* query = librdf_new_query(world.cobj(), "sparql", NULL, query_string, NULL);
+  //const unsigned char* query_string = (const unsigned char*)"PREFIX fd: <http://freedesktop.org/standards/xesam/1.0/core#> SELECT ?url WHERE { ?x fd:fileExtension \"cpp\" . ?x fd:url ?url }";
+  librdf_query* query = librdf_new_query(world.cobj(), "rdql", NULL, query_string, NULL);
 
   librdf_query_results* results=librdf_model_query_execute(model.cobj(), query);
   if(!results) {
     fprintf(stderr, "Query of model with '%s' failed\n", query_string);
     return 1;
   }
-/*
+
   while(!librdf_query_results_finished(results)) {
     const char **names=NULL;
     librdf_node* values[10];
@@ -153,7 +152,7 @@ int main(int argc, char * argv[])
 
   librdf_free_query_results(results);
   librdf_free_query(query);
-*/
+
 
 
   return 0;
